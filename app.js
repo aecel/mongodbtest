@@ -85,6 +85,43 @@ const updateDoc = async (collection, docToUpdate, update) => {
   }
 }
 
+const updateDocs = async (collection, docsToUpdate, update) => {
+  try {
+    let result = await collection.updateMany(docsToUpdate, update)
+    result.modifiedCount > 0
+      ? console.log(`Updated ${result.modifiedCount} documents`)
+      : console.log("No documents updated")
+  } catch (error) {
+    console.log("Error updating documents")
+    console.error(`Error: ${error}`)
+  }
+}
+
+const deleteDoc = async (collection, docToDelete) => {
+  try {
+    // To delete many documents, use .deleteMany()
+    let result = await collection.deleteOne(docToDelete)
+    result.deletedCount === 1
+      ? console.log("Deleted one document")
+      : console.log("No documents deleted")
+  } catch (error) {
+    console.log("Error deleting document")
+    console.error(`Error: ${error}`)
+  }
+}
+
+const deleteDocs = async (collection, docsToDelete) => {
+  try {
+    let result = await collection.deleteMany(docsToDelete)
+    result.deletedCount > 0
+      ? console.log(`Deleted ${result.deletedCount} documents`)
+      : console.log("No documents deleted")
+  } catch (error) {
+    console.log("Error deleting documents")
+    console.error(`Error: ${error}`)
+  }
+}
+
 const docToUpdate = { _id: sampleAccountId }
 const update = { $inc: { balance: 100 } }
 
@@ -92,7 +129,7 @@ const update = { $inc: { balance: 100 } }
 const main = async () => {
   try {
     await connectToDatabase()
-    await findDoc(accountsCollection, {_id: sampleAccountId})
+    await findDoc(accountsCollection, { _id: sampleAccountId })
   } catch (error) {
     console.error(`Error: ${error}`)
   } finally {
